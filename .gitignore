@@ -49,3 +49,8 @@ ai_agent/embeddings/   # Agar embeddings locally store kar rahe ho toh
 
 # --- Others ---
 .cache/
+# Ignore temporary folders
+temp/
+tmp/
+*/temp/
+*/tmp/
