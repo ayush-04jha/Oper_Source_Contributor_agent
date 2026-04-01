@@ -1,0 +1,26 @@
+# --- Backend (Node.js) ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.env
+
+# --- AI Engine (Python) ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+.python-version
+
+# --- Database & Temp ---
+# Ignore the cloned repositories
+temp/
+*.log
+.DS_Store
+
+# --- IDEs ---
+.vscode/
+.idea/
