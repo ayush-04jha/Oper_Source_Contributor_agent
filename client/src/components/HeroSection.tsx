@@ -1,6 +1,12 @@
-
+import { useNavigate } from "react-router-dom"
 
 function HeroSection() {
+  const navigate = useNavigate();
+
+  const NavigateToLinkDrop = ():void=>{
+    navigate("/pastelink")
+  }
+
   return (
     <>
       <div className="border-2 flex bg-[#0d0f14] justify-center items-center  py-24 min-h-[90vh]">
@@ -29,7 +35,7 @@ function HeroSection() {
 
 
           <div className="flex justify-start space-x-8 mt-6">
-            <button className="h-12 text-[20px] px-6 pb-2 bg-[#a8ff3e] rounded-[5px]">Start contributing free</button>
+            <button onClick={NavigateToLinkDrop} className="cursor-pointer hover:bg-lime-300 transition h-12 text-[20px] px-6 pb-2 bg-[#a8ff3e] rounded-[5px]">Start contributing free</button>
             
             <button className=" bg-[#0d0f14] border border-[#1e2530] text-white rounded-[7px] px-7 ">See a demo</button>
           </div>

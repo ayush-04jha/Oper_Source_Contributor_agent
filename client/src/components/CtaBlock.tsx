@@ -1,5 +1,12 @@
+import { useNavigate } from "react-router-dom";
 
 function CtaBlock() {
+  const navigate = useNavigate();
+  
+
+  const NavigateToLinkDrop = ():void=>{
+    navigate("/pastelink")
+  }
   return (
     <div className="flex justify-center items-center min-h-[77vh] bg-[#0d0f14]">
         <div className="rounded-3xl flex flex-col justify-center items-center gap-5 border border-[#1e3020] min-h-[55vh] max-w-[65%] bg-linear-to-br from-[#111820] to-[#0f1a14]">
@@ -8,7 +15,7 @@ function CtaBlock() {
             <div className=" font-syne-ExtraBold text-white text-[40px] max-w-[90%] text-center">Your first open source PR
 is closer than you think.</div>
             <div className=" text-[#6e7d9b]">Join 12,000+ developers who shipped their first contribution with contrib.ai.</div>
-            <button className="bg-[#a8ff3e] rounded-lg p-2">Start for free — no sign up needed →</button>
+            <button onClick={NavigateToLinkDrop} className="cursor-pointer hover:bg-lime-300 transition bg-[#a8ff3e] rounded-lg p-2">Start for free — no sign up needed →</button>
         </div>
     </div>
   )
