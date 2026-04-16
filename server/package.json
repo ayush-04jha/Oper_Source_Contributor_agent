@@ -4,15 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js --ignore temp/"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
     "fs-extra": "^11.3.4",
     "mongodb": "^7.1.1",
+    "nodemon": "^3.1.14",
     "simple-git": "^3.33.0",
     "uuid": "^13.0.0"
   }

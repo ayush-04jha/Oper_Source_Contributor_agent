@@ -1,3 +1,5 @@
+# this file is running by node.js and then it read all the files in git repo and parse it and store it in vector database by making embedding of it.
+
 import sys
 import json
 import os
@@ -136,9 +138,10 @@ def process_file(file_path, repo_id):
     walk(root)
     return count
 
-
+# the code inside  __name__ == "__main__" runs only when you run the file directly in terminal. and if you try to import this file in any other folder and then run this file then with the desired requirement you will also run the code outside of __name__=="main" but not the code not the inside one 
 if __name__ == "__main__":
-    # Usage: python processor.py [file_path] [repo_id]
+    # Usage: python processor.py [file_path] [repo_id] 
+    # sys.argv read the python command run in terminal and extract f_path and repo_id from it. we run the command with help of node.js
     if len(sys.argv) > 2:
         f_path = sys.argv[1]
         r_id = sys.argv[2]

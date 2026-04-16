@@ -1,5 +1,16 @@
-
+import { useState } from "react"
+import API from "../../axiosSetup/API.tsx"
 function LinkDrop() {
+
+   const [url_link,seturl_link] = useState("")
+  
+  const  analyzeUrl  = async ()=>{
+    console.log(url_link);
+    
+        const res = await API.post("/num",{"link":url_link})
+        return res.data
+  }
+
   return (
     <div className="min-h-screen bg-[#0b0f14] text-white flex flex-col items-center justify-center px-4">
 
@@ -30,12 +41,14 @@ function LinkDrop() {
           {/* Input */}
           <input
             type="text"
+            value={url_link}
+            onChange={(e)=>{seturl_link(e.target.value)}}
             placeholder="https://github.com/owner/repository"
             className="flex-1 bg-transparent px-4 py-3 outline-none text-sm text-gray-300"
           />
 
           {/* Button */}
-          <button className="bg-lime-400 text-black px-6 py-3 font-medium cursor-pointer hover:bg-lime-300 transition">
+          <button onClick={analyzeUrl}  className="bg-lime-400 text-black px-6 py-3 font-medium cursor-pointer hover:bg-lime-300 transition">
             Analyze →
           </button>
         </div>
