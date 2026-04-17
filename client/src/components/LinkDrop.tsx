@@ -1,14 +1,17 @@
 import { useState } from "react"
 import API from "../../axiosSetup/API.tsx"
+import { useNavigate } from "react-router-dom"
 function LinkDrop() {
 
    const [url_link,seturl_link] = useState("")
-  
+   const navigate = useNavigate();
   const  analyzeUrl  = async ()=>{
     console.log(url_link);
     
         const res = await API.post("/num",{"link":url_link})
-        return res.data
+        console.log(res.data);
+        if(res.status===200) navigate("/chatbox")
+        else navigate("/pastelink") 
   }
 
   return (

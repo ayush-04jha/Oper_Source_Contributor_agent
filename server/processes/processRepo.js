@@ -62,12 +62,12 @@ export default  async function processRepo(url) {
                 console.log(`❌ Skipped (Error in file)`);
             }
         }
-
+         
         console.log(`\n--- INGESTION COMPLETE ---`);
         console.log(`Total Files Processed: ${codeFiles.length}`);
         console.log(`Total Functions in Vector DB: ${totalFunctionsSaved}`);
         console.log(`Repo ID for Search: ${jobId}`);
-
+         return 1;
 
     } catch (err) {
         console.error("❌ Critical System Error:", err.message);

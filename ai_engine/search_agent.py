@@ -79,7 +79,7 @@ def search_and_answer(query, repo_id):
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         user_query = sys.argv[1]
-       
+                   
         r_id = sys.argv[2] if len(sys.argv) > 2 else ""
         answer = search_and_answer(user_query, r_id)
         print(answer)
