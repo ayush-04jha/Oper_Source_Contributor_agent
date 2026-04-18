@@ -14,9 +14,9 @@ client_db = MongoClient(os.getenv("MONGO_URI"))
 db = client_db["code_agent"]
 collection = db["embeddings"]
 
-def search_and_answer(query, repo_id):
+def search_and_answer(query):
    
-    query_vector = client_ai.models.embed_content(
+    query_vector =  client_ai.models.embed_content(
         model="models/gemini-embedding-2-preview",
         contents=query,
         config={"task_type": "retrieval_query"}
@@ -57,7 +57,7 @@ def search_and_answer(query, repo_id):
     prompt = f"""
     You are a Senior Open Source Contributor Agent. 
     Use the following code snippets from the repository to answer the user's question accurately.
-    If the answer isn't in the code, say you don't know.
+    If the answer isn't in the code, give me generalised answer based on the question.
 
     CONTEXT FROM REPOSITORY:
     {context_text}
@@ -81,5 +81,5 @@ if __name__ == "__main__":
         user_query = sys.argv[1]
                    
         r_id = sys.argv[2] if len(sys.argv) > 2 else ""
-        answer = search_and_answer(user_query, r_id)
+        answer = search_and_answer(user_query)
         print(answer)

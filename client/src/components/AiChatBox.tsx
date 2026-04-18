@@ -4,6 +4,7 @@ import SendIcon from "./SendIcon";
 import { socket } from "../socket";
 
 function AiChatBox() {
+
   const [querry, updatequerry] = useState("")
   type Sender = "user" | "bot";
   type Message = {
@@ -14,7 +15,9 @@ function AiChatBox() {
   // whenever AiChatBox render on UI this socket connect useeffect  will run and try to connect a wab-socket to the server
   useEffect(() => {
     socket.connect()
-
+    if (socket.connected) {
+    console.log("Already connected:", socket.id);
+  }
     socket.on("connect", () => {
       console.log("Connected:", socket.id);
     });
@@ -25,20 +28,31 @@ function AiChatBox() {
 
 
     return () => {
-      socket.disconnect();
+      socket.off("connect");
+      socket.off("disconnect");
     }
   }, [])
+  useEffect(() => {
+    const handler = (data: { ai_response: string }) => {
+      setMessage((prev) => [
+        ...prev,
+        { sender: "bot", text: data.ai_response }
+      ]);
+    }
 
+    socket.on("answer_received", handler);
+
+    return () => {
+      socket.off("answer_received", handler);
+    };
+  }, []);
   const sendQuerry = () => {
-    console.log("button clicked", messages);
+    console.log("button clicked", messages); // working
 
     const message: Message = { sender: "user", text: querry }
-    setMessage((prev) => [...prev, message])
+    setMessage((prev) => [...prev, message]);
     socket.emit("querry_sent", { querry: message.text })
-    socket.on("answer_received", (ai_response) => {
-      setMessage((prev) => [...prev, { sender: "bot", text: ai_response }])
-    })
-
+    updatequerry("")
   }
   return (
     <div className="bg-[#0d0f14] min-h-screen border border-[#1E2530]">
