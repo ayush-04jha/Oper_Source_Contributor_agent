@@ -49,7 +49,7 @@ function Loading() {
             </div>
 
             {/* Center Block */}
-            <div className="flex flex-col border border-white items-center gap-5 w-full max-w-105">
+            <div className="flex flex-col  items-center gap-5 w-full max-w-105">
 
                 {/* Repo + Dot */}
                 <div className="flex items-center gap-2">

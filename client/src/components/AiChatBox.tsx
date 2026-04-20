@@ -46,14 +46,23 @@ function AiChatBox() {
       socket.off("answer_received", handler);
     };
   }, []);
+
   const sendQuerry = () => {
+     
     console.log("button clicked", messages); // working
 
     const message: Message = { sender: "user", text: querry }
+    if (!message.text.trim()) return
     setMessage((prev) => [...prev, message]);
     socket.emit("querry_sent", { querry: message.text })
     updatequerry("")
   }
+  const handleKeyDown = (e:React.KeyboardEvent<HTMLInputElement>) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault(); // prevents newline
+    sendQuerry(); // your send function
+  }
+};
   return (
     <div className="bg-[#0d0f14] min-h-screen border border-[#1E2530]">
       {/* contrib.ai assistant */}
@@ -83,7 +92,7 @@ function AiChatBox() {
       </div>
       {/* input box */}
       <div className="flex border-2 border-[#1E2530]  items-center justify-around px-4 pr-4 h-[10vh]">
-        <input type="text" value={querry} onChange={(e) => { updatequerry(e.target.value) }} placeholder="Ask anything about this repo…" className="rounded-2xl pl-3 text-white border-2 border-[#1E2530] min-w-[95%] h-[65%]" />
+        <input type="text"  onKeyDown={handleKeyDown} value={querry} onChange={(e) => { updatequerry(e.target.value) }} placeholder="Ask anything about this repo…" className="rounded-2xl pl-3 text-white border-2 border-[#1E2530] min-w-[95%] h-[65%]" />
         {/* <div className="rounded-2xl text-white border-2 border-[#1E2530] min-w-[95%] h-[65%]">Ask anything about this repo…</div> */}
         {/* send button */}
 
