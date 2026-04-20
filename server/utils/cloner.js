@@ -10,8 +10,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const git = simpleGit();
 console.log("__dirname: ",__dirname);
 
- export async function cloneRepository(repoUrl){
-        const jobId = uuidv4();
+ export async function cloneRepository(repoUrl,jobId){
+        
         // now we get out of the current folder and move to the temp folder.
         const tempBaseDir = path.join(__dirname,'..','temp');
         // and make a folder inside the temp folder which name will be the unique job id.
@@ -29,7 +29,7 @@ console.log("__dirname: ",__dirname);
         console.log(`[${jobId}] Successfully cloned to: ${targetPath}`);
         return { jobId, targetPath };
         }
-        catch{
+        catch(error){
 console.error("Cloning failed:", error);
         throw error;
         }

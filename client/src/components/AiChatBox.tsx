@@ -11,7 +11,7 @@ function AiChatBox() {
     sender: Sender;
     text: string;
   }
-  const [messages, setMessage] = useState<Message[]>([{ sender: "user", text: "how are you" }, { sender: "bot", text: "I am fine" }, { sender: "user", text: "how are you" }, { sender: "user", text: "how are you" }])
+  const [messages, setMessage] = useState<Message[]>([])
   // whenever AiChatBox render on UI this socket connect useeffect  will run and try to connect a wab-socket to the server
   useEffect(() => {
     socket.connect()
@@ -88,7 +88,7 @@ function AiChatBox() {
         {/* send button */}
 
 
-        <button onClick={sendQuerry} className="border border-white cursor-pointer">
+        <button onClick={sendQuerry} className="cursor-pointer">
           <SendIcon />
         </button>
 

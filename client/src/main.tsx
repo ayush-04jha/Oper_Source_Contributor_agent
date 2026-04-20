@@ -5,6 +5,7 @@ import { createBrowserRouter, createRoutesFromElements, RouterProvider,Route } f
 import LandingPage from "./Pages/LandingPage";
 import LinkDrop from "./components/LinkDrop";
 import AiChatBox from "./components/AiChatBox"
+import Loading from "./components/Loading";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -12,6 +13,7 @@ const router = createBrowserRouter(
         <Route path="/" element={<LandingPage/>}/>
         <Route path="/pastelink" element={<LinkDrop/>}/>
         <Route path="/chatbox" element={<AiChatBox/>}/>
+        <Route path="/loading/:jobId" element={<Loading />}/>
         </>
         
     )

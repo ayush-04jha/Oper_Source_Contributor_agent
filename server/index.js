@@ -3,8 +3,8 @@ import http from "http";
 import cors from "cors";
 import urlProcessingRouter from "./routes/urlProcessingRouter.js"
 import { initSocket } from "./socket.js";
+
 const app = express()
-console.log("this is app",app);
 
 const server = http.createServer(app) 
 initSocket(server);

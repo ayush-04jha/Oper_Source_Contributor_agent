@@ -1,14 +1,12 @@
 import processRepo from "../processes/processRepo.js"
-
+import { v4 as uuidv4 } from "uuid";
+import { pendingJobs } from "../utils/jobStore.js";
 
 
 export const urlprocessor = async (req, res) => {
     const gitHubLink = req.body.link;
-    try {
-        await processRepo(gitHubLink)
-        return res.status(200).json({message:"all files processed"})
-    }
-    catch (e) {
-        return res.status(500).json({ message: e.message })
-    }
+    const jobId = uuidv4();
+    processRepo(gitHubLink,jobId)
+    
+    return res.status(200).json({ jobId });
 }

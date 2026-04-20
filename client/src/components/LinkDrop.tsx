@@ -3,15 +3,19 @@ import API from "../../axiosSetup/API.tsx"
 import { useNavigate } from "react-router-dom"
 function LinkDrop() {
 
-   const [url_link,seturl_link] = useState("")
-   const navigate = useNavigate();
-  const  analyzeUrl  = async ()=>{
+  const [url_link, seturl_link] = useState("")
+  const navigate = useNavigate();
+  const analyzeUrl = async () => {
     console.log(url_link);
+
+    const res = await API.post("/num", { "link": url_link })
+    console.log(res.data);
+    const jobId = res.data.jobId;
+    console.log("this is jobId hai:", jobId);
+
     
-        const res = await API.post("/num",{"link":url_link})
-        console.log(res.data);
-        if(res.status===200) navigate("/chatbox")
-        else navigate("/pastelink") 
+      navigate(`/loading/${jobId}`);
+  
   }
 
   return (
@@ -45,13 +49,13 @@ function LinkDrop() {
           <input
             type="text"
             value={url_link}
-            onChange={(e)=>{seturl_link(e.target.value)}}
+            onChange={(e) => { seturl_link(e.target.value) }}
             placeholder="https://github.com/owner/repository"
             className="flex-1 bg-transparent px-4 py-3 outline-none text-sm text-gray-300"
           />
 
           {/* Button */}
-          <button onClick={analyzeUrl}  className="bg-lime-400 text-black px-6 py-3 font-medium cursor-pointer hover:bg-lime-300 transition">
+          <button onClick={analyzeUrl} className="bg-lime-400 text-black px-6 py-3 font-medium cursor-pointer hover:bg-lime-300 transition">
             Analyze →
           </button>
         </div>
