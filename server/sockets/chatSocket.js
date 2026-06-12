@@ -7,6 +7,11 @@ export const chatHandler = (socket) => {
     try {
       console.log("query reached to server:", msg);
 
+      if (!msg.repoId) {
+        socket.emit("error", { message: "Repo id is missing. Please analyze a repo first." });
+        return;
+      }
+
       await Conversation.findByIdAndUpdate(
         msg.conversationId,
         {
@@ -19,7 +24,8 @@ export const chatHandler = (socket) => {
         }
       );
       const response = await (axios.post("http://localhost:8000/chat", {
-        querry: msg.querry
+        querry: msg.querry,
+        repo_id: msg.repoId
       }))
       await Conversation.findByIdAndUpdate(
         msg.conversationId,

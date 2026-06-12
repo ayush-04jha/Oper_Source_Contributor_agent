@@ -28,8 +28,8 @@ function Loading() {
 
         socket.on("done", () => {
             setProgress(100);
-            setFile("Completed 🎉");
-            navigate("/chatbox")
+            setFile("Completed");
+            navigate(`/chatbox/${jobId}`)
             
         });
         return () => {
@@ -38,7 +38,7 @@ function Loading() {
            
         };
 
-    }, [jobId])
+    }, [jobId, navigate])
 
     return (
         <div className="bg-[#0d0f14] border border-[#1e2530]  min-h-screen flex flex-col items-center justify-center px-8 py-12 font-mono gap-8">

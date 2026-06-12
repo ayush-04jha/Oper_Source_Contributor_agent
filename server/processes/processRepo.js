@@ -20,7 +20,7 @@ export default async function processRepo(url, jobId) {
         const allFiles = await getFiles(targetPath)
         // extracting the files which have extensions as ['.js', '.py', '.ts', '.jsx']
         const codeFiles = allFiles.filter(file =>
-            ['.js', '.py', '.ts', '.jsx'].includes(path.extname(file))
+            ['.js', '.py', '.ts', '.jsx', '.tsx'].includes(path.extname(file))
         );
 
         if (codeFiles.length === 0) {

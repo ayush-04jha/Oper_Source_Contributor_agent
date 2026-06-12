@@ -13,6 +13,7 @@ const router = createBrowserRouter(
         <Route path="/" element={<LandingPage/>}/>
         <Route path="/pastelink" element={<LinkDrop/>}/>
         <Route path="/chatbox" element={<AiChatBox/>}/>
+        <Route path="/chatbox/:jobId" element={<AiChatBox/>}/>
         <Route path="/loading/:jobId" element={<Loading />}/>
         </>
         

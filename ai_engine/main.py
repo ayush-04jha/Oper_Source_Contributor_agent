@@ -13,11 +13,12 @@ app.add_middleware(
 
 class Querry(BaseModel):
     querry: str
+    repo_id: str
     
     
 @app.post("/chat")
 def chat(data:Querry):
-   answer =  search_and_answer(data.querry)
+   answer =  search_and_answer(data.querry, data.repo_id)
    return {"answer":answer}
 
 

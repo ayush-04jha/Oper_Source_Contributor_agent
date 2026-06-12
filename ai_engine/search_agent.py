@@ -14,7 +14,7 @@ client_db = MongoClient(os.getenv("MONGO_URI"))
 db = client_db["code_agent"]
 collection = db["embeddings"]
 
-def search_and_answer(query):
+def search_and_answer(query, repo_id):
    
     query_vector =  client_ai.models.embed_content(
         model="models/gemini-embedding-2-preview",
@@ -29,9 +29,17 @@ def search_and_answer(query):
                 "index": "vector_index", 
                 "path": "embedding",
                 "queryVector": query_vector,
-                "numCandidates": 500,
-                "limit": 10, 
+                "numCandidates": 1000,
+                "limit": 1000, 
             }
+        },
+        {
+            "$match": {
+                "repo_id": repo_id
+            }
+        },
+        {
+            "$limit": 10
         },
         {
             "$project": {
@@ -86,5 +94,5 @@ if __name__ == "__main__":
         user_query = sys.argv[1]
                    
         r_id = sys.argv[2] if len(sys.argv) > 2 else ""
-        answer = search_and_answer(user_query)
+        answer = search_and_answer(user_query, r_id)
         print(answer)

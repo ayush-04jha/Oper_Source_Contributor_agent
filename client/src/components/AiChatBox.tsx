@@ -1,11 +1,16 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import LogoIcon from "./LogoIcon";
 import SendIcon from "./SendIcon";
 import { socket } from "../socket";
 import API from "../../axiosSetup/API";
+import { useParams } from "react-router-dom";
+import type { AxiosError } from "axios";
 
 function AiChatBox() {
 
+  const { jobId } = useParams();
+  const repoId = jobId ?? localStorage.getItem("repoId");
+  const conversationStorageKey = repoId ? `conversationId:${repoId}` : "conversationId";
   const [querry, updatequerry] = useState("")
   type Sender = "user" | "bot";
   type Message = {
@@ -16,10 +21,41 @@ function AiChatBox() {
   const [conversationId, setConversationId] = useState<string | null>(null);
   // whenever AiChatBox render on UI this socket connect useeffect  will run and try to connect a wab-socket to the server
   // functions
-  const fetchMessage = async () => {
-    const response = await API.get("/messages");
-    setMessage(response.data);
-  }
+  const createConversation = useCallback(async () => {
+    const res = await API.post("/conversation");
+    const newConversationId = res.data._id;
+
+    setConversationId(newConversationId);
+
+    localStorage.setItem(
+      conversationStorageKey,
+      newConversationId
+    );
+
+    return newConversationId;
+  }, [conversationStorageKey])
+
+  const fetchMessage = useCallback(async () => {
+    console.log("frontend convId:",conversationId);
+    try {
+      const response = await API.get("/messages", {
+        params: {
+          conversationId,
+        },
+      });
+      setMessage(response.data);
+    } catch (err: unknown) {
+      const error = err as AxiosError;
+      if (error.response?.status === 404) {
+        localStorage.removeItem(conversationStorageKey);
+        setMessage([]);
+        await createConversation();
+        return;
+      }
+
+      console.error(err);
+    }
+  }, [conversationId, conversationStorageKey, createConversation])
 
   const sendQuerry = () => {
 
@@ -28,7 +64,7 @@ function AiChatBox() {
     const message: Message = { sender: "user", text: querry }
     if (!message.text.trim()) return
     setMessage((prev) => [...prev, message]);
-    socket.emit("querry_sent", { conversationId, querry: message.text })
+    socket.emit("querry_sent", { conversationId, repoId, querry: message.text })
     updatequerry("")
   }
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -39,34 +75,35 @@ function AiChatBox() {
   };
   //useEffects 1
   useEffect(() => {
-  const initConversation = async () => {
-
-    const existingId =
-      localStorage.getItem("conversationId");
-
-    if (existingId) {
-      setConversationId(existingId);
-      return;
+    if (jobId) {
+      localStorage.setItem("repoId", jobId);
     }
-
-    const res = await API.post("/conversation");
-
-    setConversationId(res.data._id);
-
-    localStorage.setItem(
-      "conversationId",
-      res.data._id
-    );
-  };
-
-  initConversation();
-}, []);
-//useEffects 2
+  }, [jobId])
+  //useEffects 1
   useEffect(() => {
-    fetchMessage();
-  }, [])
+    const initConversation = async () => {
 
-//useEffects 3
+      const existingId =
+        localStorage.getItem(conversationStorageKey);
+
+      if (existingId) {
+        setConversationId(existingId);
+        return;
+      }
+
+      await createConversation();
+    };
+
+    initConversation();
+  }, [conversationStorageKey, createConversation]);
+  //useEffects 2
+  useEffect(() => {
+    if (!conversationId) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchMessage();
+  }, [conversationId, fetchMessage])
+
+  //useEffects 3
   useEffect(() => {
     socket.connect()
     if (socket.connected) {
@@ -79,12 +116,12 @@ function AiChatBox() {
     socket.on("disconnect", () => {
       console.log("Disconnected");
     });
-      return () => {
+    return () => {
       socket.off("connect");
       socket.off("disconnect");
     }
   }, [])
-//useEffects 4
+  //useEffects 4
   useEffect(() => {
     const handler = (data: { ai_response: string }) => {
       setMessage((prev) => [
