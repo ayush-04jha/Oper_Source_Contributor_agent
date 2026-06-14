@@ -130,8 +130,3 @@ npm run dev
 npm start
 ```
 
-## Notes
-
-- The issues panel in the chatbot is currently frontend-only mock UI.
-- Backend issue fetching and label syncing can be connected later through a GitHub API integration or a repository issue ingestion pipeline.
-- The default `client/README.md` is the Vite template README; this root README is the main project documentation.
