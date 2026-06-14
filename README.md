@@ -4,7 +4,7 @@ contrib.ai is a repo-aware assistant for open-source contributors. Paste a repos
 
 ## Screenshots
 
-Add your project screenshots to a `screenshots/` folder at the root of this repo, then update these image paths if needed.
+
 
 ### Landing Page
 
